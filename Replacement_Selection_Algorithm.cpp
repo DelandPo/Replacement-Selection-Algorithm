@@ -12,37 +12,61 @@ using namespace std;
 int readFromFile(int myArray[], int Size, ifstream& infile);
 int main()
 {
-	const int Size = 100;
+	const int Size = 10;
 	string file_Name = "Input1.txt";
 	ifstream infile;
 	infile.open(file_Name);
 	if (!infile)
+	{
+		cout << "File couldn't be open!!" << endl;
 		return 0;
+	}
 	int myArray[Size];
 	int Counter = readFromFile(myArray, Size, infile);
-	int Boundary = 3;
-	MinHeap activeHeap(myArray,Boundary);
-	//cout << myArray[3] << "Index 3" << endl;
-	activeHeap._vector[0] = 35;
-	activeHeap.active_Heapify(Boundary);
-	activeHeap._vector.push_back(8899);
-	activeHeap._vector.push_back(10000);
-	activeHeap._vector.push_back(765);
-
-	activeHeap._vector.push_back(760);
+	MinHeap activeHeap(myArray, 10);
 	
-	activeHeap.pending_Heapify(3);
+	int curr_Active_Heap = 10;
+	int curr_Pending_Heap = 0;
+	int borderLIne = 9;
+	int Next;
 	
-	//activeHeap.Heapify();
-	for (int i = 0; i < 7; i++)
+	while ( !infile.eof())
 	{
-		cout << "Size of the heap" << activeHeap._vector.size() << endl;
-		cout << activeHeap._vector[i] << " " << endl;
+		int Prev = activeHeap.GetMin();
+		cout << Prev<<" ";
+		if (!infile.eof())
+		{
+			infile >> Next;
+			if (Next > Prev)
+			{
+				activeHeap._vector[0] = Next;
+				activeHeap.Heapify();
+			}
+			else
+			{
+				activeHeap.DeleteMin();
+				curr_Active_Heap--;
+				curr_Pending_Heap++;
+				activeHeap._vector.push_back(Next);
+				cout << "Value getting Pushed" << activeHeap._vector[activeHeap._vector.size() - 1] << endl;
+			
+			}
+			
+			
+		}
+		
+	}
+	cout << "\nWhat is it displaying in here then" << endl;
+	cout << "Vector Size::" << activeHeap.active_vector_size << endl;
+	cout << "Vector is displayed in following sereis" << endl;
+	for (int i = 0; i < activeHeap._vector.size()-1; i++)
+	{
+		cout << activeHeap._vector[i] << endl;
+
+		
 	}
 
-	
-
-    return 0;
+	return 0;
 }
 
 int readFromFile(int myArray[],int Size,ifstream& infile)

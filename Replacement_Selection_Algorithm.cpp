@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <cassert>
 #include "MinHeap.h"
 using namespace std;
 int readFromFile(int myArray[], int Size, ifstream& infile);
@@ -25,46 +26,54 @@ int main()
 	int Counter = readFromFile(myArray, Size, infile);
 	MinHeap activeHeap(myArray, 10);
 	
-	int curr_Active_Heap = 10;
+	int curr_Active_Heap = 9;
 	int curr_Pending_Heap = 0;
 	int borderLIne = 9;
 	int Next;
-	
-	while ( !infile.eof())
+	int Counter_Loop = 0;
+	int Looper = 0;
+	activeHeap.active_vector_size = 10;
+	while (curr_Active_Heap != -1)
 	{
-		int Prev = activeHeap.GetMin();
-		cout << Prev<<" ";
+		int Previous = activeHeap.GetMin();
+		cout << Previous << " ";
 		if (!infile.eof())
 		{
+			int Next;
 			infile >> Next;
-			if (Next > Prev)
+			if (Next > Previous)
 			{
 				activeHeap._vector[0] = Next;
 				activeHeap.Heapify();
 			}
 			else
 			{
-				activeHeap.DeleteMin();
-				curr_Active_Heap--;
-				curr_Pending_Heap++;
-				activeHeap._vector.push_back(Next);
-				cout << "Value getting Pushed" << activeHeap._vector[activeHeap._vector.size() - 1] << endl;
-			
-			}
-			
-			
-		}
-		
-	}
-	cout << "\nWhat is it displaying in here then" << endl;
-	cout << "Vector Size::" << activeHeap.active_vector_size << endl;
-	cout << "Vector is displayed in following sereis" << endl;
-	for (int i = 0; i < activeHeap._vector.size()-1; i++)
-	{
-		cout << activeHeap._vector[i] << endl;
+				int temp = activeHeap._vector[0];
+				activeHeap._vector[0] = activeHeap._vector[curr_Active_Heap];
+				activeHeap._vector[curr_Active_Heap] = temp;
+				if (curr_Active_Heap != (activeHeap._vector.size() - 1))
+				{
+					int temp = activeHeap._vector[curr_Active_Heap];
+					activeHeap._vector[activeHeap._vector.size() - 1] = temp;
+					activeHeap._vector[curr_Active_Heap] = activeHeap._vector[activeHeap._vector.size() - 1];
+					activeHeap._vector.pop_back();
 
-		
+				}
+				else
+					activeHeap._vector.pop_back();
+				activeHeap._vector.push_back(Next);
+				curr_Active_Heap--;
+				activeHeap.active_vector_size--;
+				activeHeap.Heapify();
+				curr_Pending_Heap++;
+
+			}
+		}
+		else
+			cout << "Ran out of the Input Data" << endl;
 	}
+	cout << "\nActive Vector Size ::" << activeHeap.active_vector_size << endl;
+	cout << "Actual Vector Size :: " << activeHeap._vector.size() << endl;
 
 	return 0;
 }

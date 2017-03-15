@@ -33,48 +33,112 @@ int main()
 	int Counter_Loop = 0;
 	int Looper = 0;
 	activeHeap.active_vector_size = 10;
-	while (curr_Active_Heap != -1)
-	{
-		int Previous = activeHeap.GetMin();
-		cout << Previous << " ";
-		if (!infile.eof())
+		cout << "Run 1:: ";
+		while (curr_Active_Heap != -1)
 		{
-			int Next;
-			infile >> Next;
-			if (Next > Previous)
+			int Previous = activeHeap.GetMin();
+			cout << Previous << " ";
+			if (!infile.eof())
 			{
-				activeHeap._vector[0] = Next;
-				activeHeap.Heapify();
-			}
-			else
-			{
-				int temp = activeHeap._vector[0];
-				activeHeap._vector[0] = activeHeap._vector[curr_Active_Heap];
-				activeHeap._vector[curr_Active_Heap] = temp;
-				if (curr_Active_Heap != (activeHeap._vector.size() - 1))
+				int Next;
+				infile >> Next;
+				if (Next > Previous)
 				{
-					int temp = activeHeap._vector[curr_Active_Heap];
-					activeHeap._vector[activeHeap._vector.size() - 1] = temp;
-					activeHeap._vector[curr_Active_Heap] = activeHeap._vector[activeHeap._vector.size() - 1];
-					activeHeap._vector.pop_back();
-
+					activeHeap._vector[0] = Next;
+					activeHeap.Heapify();
 				}
 				else
-					activeHeap._vector.pop_back();
-				activeHeap._vector.push_back(Next);
-				curr_Active_Heap--;
-				activeHeap.active_vector_size--;
-				activeHeap.Heapify();
-				curr_Pending_Heap++;
+				{
 
+					int temp = activeHeap._vector[0];
+					activeHeap._vector[0] = activeHeap._vector[curr_Active_Heap];
+					activeHeap._vector[curr_Active_Heap] = temp;
+
+
+					int temp1 = activeHeap._vector[curr_Active_Heap];
+					activeHeap._vector[curr_Active_Heap] = activeHeap._vector[activeHeap._vector.size() - 1];
+					activeHeap._vector[activeHeap._vector.size() - 1] = temp1;
+
+					activeHeap._vector.pop_back();
+
+
+
+					//activeHeap._vector.push_back(Next);
+					curr_Active_Heap--;
+					activeHeap.active_vector_size--;
+
+					curr_Pending_Heap++;
+					activeHeap._vector.push_back(Next);
+					//cout << "Data getting Pushed" << activeHeap._vector[activeHeap._vector.size() - 1] << endl;
+
+
+
+				}
 			}
+			else
+				cout << "Ran out of the Input Data" << endl;
+
+			activeHeap.Heapify();
 		}
-		else
-			cout << "Ran out of the Input Data" << endl;
-	}
+		 curr_Active_Heap = 9;
+		curr_Pending_Heap = 0;
+		activeHeap.active_vector_size = 10;
+		activeHeap.Heapify();
+		while (curr_Active_Heap != -1)
+		{
+			int Previous = activeHeap.GetMin();
+			cout << Previous << " ";
+			if (!infile.eof())
+			{
+				int Next;
+				infile >> Next;
+				if (Next > Previous)
+				{
+					activeHeap._vector[0] = Next;
+					activeHeap.Heapify();
+				}
+				else
+				{
+
+					int temp = activeHeap._vector[0];
+					activeHeap._vector[0] = activeHeap._vector[curr_Active_Heap];
+					activeHeap._vector[curr_Active_Heap] = temp;
+
+
+					int temp1 = activeHeap._vector[curr_Active_Heap];
+					activeHeap._vector[curr_Active_Heap] = activeHeap._vector[activeHeap._vector.size() - 1];
+					activeHeap._vector[activeHeap._vector.size() - 1] = temp1;
+
+					activeHeap._vector.pop_back();
+
+
+
+					//activeHeap._vector.push_back(Next);
+					curr_Active_Heap--;
+					activeHeap.active_vector_size--;
+
+					curr_Pending_Heap++;
+					activeHeap._vector.push_back(Next);
+					//cout << "Data getting Pushed" << activeHeap._vector[activeHeap._vector.size() - 1] << endl;
+
+
+
+				}
+			}
+			else
+				cout << "Ran out of the Input Data" << endl;
+
+			activeHeap.Heapify();
+		}
+
 	cout << "\nActive Vector Size ::" << activeHeap.active_vector_size << endl;
 	cout << "Actual Vector Size :: " << activeHeap._vector.size() << endl;
-
+	cout << "Run" << endl;
+	for (int i = 0; i < activeHeap._vector.size(); i++)
+	{
+		cout << activeHeap._vector[i] << " ";
+	}
+	
 	return 0;
 }
 

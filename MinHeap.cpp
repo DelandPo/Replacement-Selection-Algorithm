@@ -21,38 +21,18 @@ MinHeap::MinHeap()
 {
 }
 
-void MinHeap::active_Heapify(int active_Heap_Size)
-{
-	int length = active_Heap_Size;
-	for (int i = length - 1; i >= 0; --i)
-	{
-		BubbleDown(i);
-	}
-}
-
-void MinHeap::pending_Heapify(int active_Heap_Size)
-{
-	int length = _vector.size();
-	for (int i = length - 1; i >= active_Heap_Size; --i)
-	{
-		BubbleDown(i);
-	}
-
-}
-
 void MinHeap::Heapify()
 {
-	int length = _vector.size();
+	int length = active_vector_size;
 	for (int i = length - 1; i >= 0; --i)
 	{
 		BubbleDown(i);
 	}
 }
-
 
 void MinHeap::BubbleDown(int index)
 {
-	 int length = _vector.size();
+	int length = active_vector_size;
 	int leftChildIndex = 2 * index + 1;
 	int rightChildIndex = 2 * index + 2;
 
@@ -97,30 +77,42 @@ void MinHeap::BubbleUp(int index)
 	}
 }
 
+
+
 void MinHeap::Insert(int newValue)
 {
-	int length = _vector.size();
-	_vector[length] = newValue;
-
-	BubbleUp(length);
+	if (_vector.size() > 0)
+	{
+		int length = active_vector_size;
+		_vector[length] = newValue;
+		active_vector_size++;
+		BubbleUp(length);
+	}
+	else
+		_vector.push_back(newValue);
+	active_vector_size++;
 }
 
 int MinHeap::GetMin()
 {
-	return _vector[0];
+	if (_vector.size() > 0)
+		return _vector[0];
+	else
+		return -1;
 }
+
 
 void MinHeap::DeleteMin()
 {
-	int length = _vector.size();
-
+	int length = active_vector_size;
 	if (length == 0)
-	{
 		return;
-	}
-
 	_vector[0] = _vector[length - 1];
-	_vector.pop_back();
-
+	//_vector.pop_back();
+	_vector.erase(_vector.begin() + (length-1));
+	active_vector_size--;
 	BubbleDown(0);
+	
+	
 }
+

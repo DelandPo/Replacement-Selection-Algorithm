@@ -1,5 +1,3 @@
-
-
 #include "stdafx.h"
 
 #include <iostream>
@@ -74,7 +72,7 @@ int main()
 
 	{
 
-		//cout << "\nRun:: " << Counter_Loop << "    ";
+		cout << "\nRun:: " << Counter_Loop << " ";
 
 		while (curr_Active_Heap != 0 && !activeHeap._vector.empty())
 
@@ -183,20 +181,29 @@ int main()
 				// Fixing a simple bug
 				// out of nowhere this happened
 				//int secondTemp = activeHeap.GetMin();
-				
-				activeHeap._vector[0] = activeHeap._vector[activeHeap._vector.size()-1];
+
+				activeHeap._vector[0] = activeHeap._vector[activeHeap._vector.size() - 1];
 				activeHeap._vector.pop_back();
 				curr_Active_Heap--;
 				activeHeap.active_vector_size--;
 				activeHeap.Heapify();
-				
+
+				//Input ran out so merging the active heap and the pending Heap
+				curr_Active_Heap = activeHeap._vector.size() ;
+				//cout <<"How come the size is 1"<< curr_Active_Heap << endl;
+
+				curr_Pending_Heap = 0;
+
+				activeHeap.active_vector_size = curr_Active_Heap;
+
+				activeHeap.Heapify();
 				activeSize = activeHeap.active_vector_size;
 				for (int i = 0; i < activeSize; i++)
 
 				{
 
+					//cout << "is it in this loop" << endl;
 
-					
 					cout << activeHeap.GetMin() << " ";
 
 					activeHeap.DeleteMin();
@@ -206,7 +213,7 @@ int main()
 
 
 				}
-
+				cout << "Is it done" << endl;
 				cout << endl;
 
 				cout << "Actual Vector Size" << activeHeap._vector.size() << endl;
@@ -223,10 +230,11 @@ int main()
 
 				activeHeap.Heapify();
 
+				cout << "Is it going from the pending Heap " << endl;
 				for (int i = 0; i < pendingHeap; i++)
 
 				{
-					
+
 					cout << activeHeap.GetMin() << " ";
 
 					activeHeap.DeleteMin();
@@ -326,3 +334,4 @@ int readFromFile(int myArray[], int Size, ifstream& infile)
 	return Counter;
 
 }
+

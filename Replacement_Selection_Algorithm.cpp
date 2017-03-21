@@ -1,19 +1,11 @@
 #include "stdafx.h"
-
 #include <iostream>
-
 #include <algorithm>
-
 #include <fstream>
-
 #include <string>
-
 #include <vector>
-
 #include <list>
-
 #include <cassert>
-
 #include "MinHeap.h"
 
 using namespace std;
@@ -26,7 +18,7 @@ int main()
 
 	const int Size = 10;
 
-	string file_Name = "Input1.txt";
+	string file_Name = "Input1.txt";	// FileName 
 
 	ifstream infile;
 
@@ -42,17 +34,17 @@ int main()
 
 	}
 
-	int myArray[Size];
+	int myArray[Size];			// for Storing the first 10 elements in the Array
 
 	int Counter = readFromFile(myArray, Size, infile);
 
-	MinHeap activeHeap(myArray, 10);
+	   MinHeap activeHeap(myArray, 10);			// making a Active + Pending Heap of Size 10 
 
 
 
-	int curr_Active_Heap = 9;
+	int curr_Active_Heap = 9;			// Counter for tracking the current active heap size
 
-	int curr_Pending_Heap = 0;
+	int curr_Pending_Heap = 0;			// Counter for tracking the current pending heap size
 
 	int borderLIne = 9;
 
@@ -62,9 +54,9 @@ int main()
 
 	int Looper = 0;
 
-	activeHeap.active_vector_size = 10;
-
-	bool everyThingisDone = false;
+	activeHeap.active_vector_size = 10;		// At the begining the active Heap Size = 10
+		
+	bool everyThingisDone = false;			// Exit condition 
 
 
 
@@ -74,29 +66,30 @@ int main()
 
 		cout << "\nRun:: " << Counter_Loop << " ";
 
-		while (curr_Active_Heap != 0 && !activeHeap._vector.empty())
+		while (curr_Active_Heap != -1 && !activeHeap._vector.empty())	// Exit condition for the while loop, loops until 
 
 		{
 
-			int Previous = activeHeap.GetMin();
+			int Previous = activeHeap.GetMin();		// Returns the index 0 of the vector.
 
-			cout << Previous << " ";
+			cout << Previous << " ";			// Printing to Console Window
 
-			if (!infile.eof())
+			if (!infile.eof())					// If we have inputs available
 
 			{
 
 				int Next;
 
-				infile >> Next;
+				infile >> Next;		// Getting the next element from the file
 
-				if (Next > Previous)
+				if (Next >= Previous)
 
 				{
 
 					activeHeap._vector[0] = Next;
 
-					activeHeap.Heapify();
+					//activeHeap.Heapify();
+					//activeHeap.BubbleDown(0);
 
 				}
 
@@ -170,27 +163,23 @@ int main()
 
 				int temp = activeHeap._vector.size();
 
-				//cout << "Vector Size:: " << temp << endl;
-
-				cout << "Active Heap Size :: " << activeHeap.active_vector_size << endl;
-
 				int activeSize = activeHeap.active_vector_size;
 
-				int popper = 0;
+				
 
 				// Fixing a simple bug
 				// out of nowhere this happened
 				//int secondTemp = activeHeap.GetMin();
-
+		
 				activeHeap._vector[0] = activeHeap._vector[activeHeap._vector.size() - 1];
 				activeHeap._vector.pop_back();
 				curr_Active_Heap--;
 				activeHeap.active_vector_size--;
 				activeHeap.Heapify();
-
+				
 				//Input ran out so merging the active heap and the pending Heap
 				curr_Active_Heap = activeHeap._vector.size() ;
-				//cout <<"How come the size is 1"<< curr_Active_Heap << endl;
+				
 
 				curr_Pending_Heap = 0;
 
